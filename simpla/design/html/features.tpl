@@ -63,7 +63,6 @@
 							<a href="{url module=FeatureAdmin id=$feature->id return=$smarty.server.REQUEST_URI}">{$feature->name|escape}</a>
 						</div>
 						<div class="icons cell">
-							<a title="Использовать в фильтре" class="in_filter" href='#'></a>
 							<a title="Удалить" class="delete" href='#'></a>
 						</div>
 						<div class="clear"></div>
@@ -76,8 +75,7 @@
 
 				<span id="select">
 					<select name="action">
-						<option value="set_in_filter">Использовать в фильтре</option>
-						<option value="unset_in_filter">Не использовать в фильтре</option>
+					
 						<option value="delete">Удалить</option>
 					</select>
 				</span>
