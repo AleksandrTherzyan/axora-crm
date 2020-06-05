@@ -5,7 +5,7 @@ namespace Api;
 class Features extends Simpla
 {
     /**
-     * @param  array $filter
+     * @param array $filter
      * @return array|false
      */
     public function get_features($filter = array())
@@ -15,15 +15,26 @@ class Features extends Simpla
         $id_filter = '';
 
         if (isset($filter['category_id'])) {
-            $category_id_filter = $this->db->placehold('AND id IN ( SELECT feature_id 
+
+            $show_in_product_filter = '';
+
+            if (isset($filter['show_in_product'])) {
+                $show_in_product_filter = ' AND cf.in_product=1';
+            }
+            if (isset($filter['in_filter'])) {
+                $show_in_product_filter = ' AND cf.in_filter=1';
+            }
+
+            $category_id_filter = $this->db->placehold("AND id IN ( SELECT feature_id 
                                                                     FROM __categories_features cf 
-                                                                    WHERE cf.category_id IN(?@) 
-                                                                    )', (array)$filter['category_id']);
+                                                                    WHERE cf.category_id IN(?@)
+                                                                    $show_in_product_filter 
+                                                                    )", (array)$filter['category_id']);
         }
 
-        if (isset($filter['in_filter'])) {
-            $in_filter_filter = $this->db->placehold('AND f.in_filter=?', intval($filter['in_filter']));
-        }
+//        if (isset($filter['in_filter'])) {
+//            $in_filter_filter = $this->db->placehold('AND f.in_filter=?', intval($filter['in_filter']));
+//        }
 
         if (!empty($filter['id'])) {
             $id_filter = $this->db->placehold('AND f.id IN(?@)', (array)$filter['id']);
@@ -46,7 +57,7 @@ class Features extends Simpla
     }
 
     /**
-     * @param  int $id
+     * @param int $id
      * @return false|object
      */
     public function get_feature($id)
@@ -65,20 +76,34 @@ class Features extends Simpla
     }
 
     /**
-     * @param  int $id
+     * @param int $id
      * @return array|false
      */
     public function get_feature_categories($id)
     {
-        $query = $this->db->placehold('SELECT cf.category_id
+
+
+        $query = $this->db->placehold("SELECT cf.category_id
 										FROM __categories_features cf
-										WHERE cf.feature_id = ?', $id);
+										WHERE cf.feature_id = ?										
+										", $id);
         $this->db->query($query);
         return $this->db->results('category_id');
     }
 
+    public function get_full_fields_feature_categories($id)
+    {
+        $query = $this->db->placehold("SELECT *
+										FROM __categories_features cf
+										WHERE cf.feature_id = ?										
+										", $id);
+        $this->db->query($query);
+        return $this->db->results();
+    }
+
+
     /**
-     * @param  array|object $feature
+     * @param array|object $feature
      * @return mixed
      */
     public function add_feature($feature)
@@ -130,12 +155,12 @@ class Features extends Simpla
     }
 
     /**
-     * @param  int $product_id
-     * @param  int $feature_id
-     * @param  string $value
+     * @param int $product_id
+     * @param int $feature_id
+     * @param string $value
      * @return mixed
      */
-    public function update_option($product_id, $feature_id, $value, $position=0)
+    public function update_option($product_id, $feature_id, $value, $position = 0)
     {
         if ($value != '') {
             $query = $this->db->placehold('REPLACE INTO __options SET value=?, product_id=?, feature_id=?, position=?', $value, intval($product_id), intval($feature_id), $position);
@@ -146,6 +171,7 @@ class Features extends Simpla
 
         return $this->db->query($query);
     }
+
     /**
      * @param int $id
      * @param int $category_id
@@ -156,45 +182,42 @@ class Features extends Simpla
         $this->db->query($query);
     }
 
-    /**
-     * @param int $id
-     * @param array $categories
-     */
-    public function update_feature_categories($id, $categories)
+
+
+    public function update_feature_categories($id, $categories, $data)
     {
         $id = intval($id);
-        $query = $this->db->placehold('DELETE FROM __categories_features WHERE feature_id=?', $id);
-        $this->db->query($query);
+
+//        $query = $this->db->placehold('DELETE FROM __categories_features WHERE feature_id=?', $id);
+//        $this->db->query($query);
 
 
         if (is_array($categories)) {
-            $values = array();
+
             foreach ($categories as $category) {
-	            $values[] = '(' . $id . ', ' . intval($category) . ')';
+
+
+                $query = $this->db->placehold("SELECT * FROM __categories_features WHERE feature_id=$id AND category_id=$category");
+                $this->db->query($query);
+                $featureCategory = $this->db->result();
+
+                if ($featureCategory) {
+
+                    $query = $this->db->placehold("UPDATE __categories_features SET ?% WHERE feature_id=$id AND category_id=$category", (array)$data);
+//                    var_dump($query);die;
+                    $this->db->query($query);
+                } else {
+                    $data['feature_id'] = $id;
+                    $data['category_id'] = $category;
+                    $query = $this->db->placehold("INSERT INTO __categories_features SET ?%", $data);
+                    $this->db->query($query);
+                }
             }
-
-            $query = $this->db->placehold('INSERT INTO __categories_features (feature_id, category_id) VALUES ' . implode(', ', $values));
-            $this->db->query($query);
-
-            // Удалим значения из options
-            $query = $this->db->placehold('DELETE o
-											FROM __options o
-											LEFT JOIN __products_categories pc ON pc.product_id=o.product_id
-											WHERE o.feature_id=?
-											AND pc.position=( SELECT MIN(pc2.position) 
-											                    FROM __products_categories pc2 
-											                    WHERE pc.product_id=pc2.product_id)
-											AND pc.category_id NOT IN(?@)', $id, $categories);
-            $this->db->query($query);
-        } else {
-            // Удалим значения из options
-            $query = $this->db->placehold('DELETE o FROM __options o WHERE o.feature_id=?', $id);
-            $this->db->query($query);
         }
     }
 
     /**
-     * @param  array $filter
+     * @param array $filter
      * @return array|false
      */
     public function get_options($filter = array())
@@ -260,7 +283,7 @@ class Features extends Simpla
     }
 
     /**
-     * @param  array|int $product_id
+     * @param array|int $product_id
      * @return array|false
      */
     public function get_product_options($product_id)
