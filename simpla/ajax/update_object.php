@@ -20,7 +20,13 @@ $values = $simpla->request->post('values');
 
 switch ($object) {
 
-
+ case 'categories_features':
+        if ($simpla->managers->access('features')) {
+            $id = $values['feature_id'];
+            $categories = $values['category_id'];
+            $result = $simpla->features->update_feature_categories($id, (array)$categories,$values);
+        }
+        break;
     case 'product':
         if ($simpla->managers->access('products')) {
             $result = $simpla->products->update_product($id, $values);
