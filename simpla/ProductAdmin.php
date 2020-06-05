@@ -433,8 +433,11 @@ class ProductAdmin extends Simpla
             $category = reset($categories);
         }
         if (is_object($category)) {
-            $features = $this->features->get_features(array('category_id'=> isset($category->category_id) ? $category->category_id : $category->id));
-            $this->design->assign('features', $features);
+   $features = $this->features->get_features(array(
+                    'category_id' => isset($category->category_id) ? $category->category_id : $category->id,
+                    'show_in_product' => 1
+                )
+            );            $this->design->assign('features', $features);
         }
         return $this->design->fetch('product.tpl');
     }
