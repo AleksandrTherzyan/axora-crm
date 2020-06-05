@@ -1179,6 +1179,10 @@ span.order_label {
 .in_filter .icons a.in_filter {
 	background-image: url(../images/filter.png);
 }
+.in_filter > .icons a.in_filter, .in_filter > .tree_row .icons a.in_filter {
+	background-image: url(../images/filter.png);
+}
+
 
 .icons a.duplicate {
 	background-image: url(../images/page_copy.png);
