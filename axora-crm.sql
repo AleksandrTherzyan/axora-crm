@@ -163,7 +163,10 @@ CREATE TABLE `s_categories` (
 
 CREATE TABLE `s_categories_features` (
   `category_id` int(11) NOT NULL,
-  `feature_id` int(11) NOT NULL
+  `feature_id` int(11) NOT NULL,
+    `in_select` tinyint(1) NOT NULL DEFAULT '0',
+  `in_filter` tinyint(1) NOT NULL DEFAULT '0'
+
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
