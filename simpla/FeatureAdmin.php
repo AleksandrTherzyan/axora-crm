@@ -77,6 +77,8 @@ class FeatureAdmin extends Simpla
             $in_filter_filtered_categories = array_map(function ($cat) {
                 return $cat->category_id;
             }, $in_filter_filtered_categories);
+                    $this->design->assign('in_filter_filtered_categories', $in_filter_filtered_categories);
+
         }
         $categories = $this->categories->get_categories_tree();
         $this->design->assign('categories', $categories);
@@ -85,7 +87,6 @@ class FeatureAdmin extends Simpla
             return $cat->category_id;
         }, $feature_categories));
         $this->design->assign('in_product_filtered_categories', $in_product_filtered_categories);
-        $this->design->assign('in_filter_filtered_categories', $in_filter_filtered_categories);
 
         return $this->design->fetch('feature.tpl');
     }
