@@ -61,9 +61,9 @@
 				<div class="product-gallery">
 					<div class="product-gallery__slider">
 						{foreach $product->images as $i=>$image}
-							<a href="{$image->filename|resize:800:600:w}" class="product-gallery__item" data-value="{$i}" data-thumb="{$image->filename|resize:100:100}" data-fancybox="product-gallery">
+							<a href="{$image->filename|resize:800:600:w}" title="{$product->name|escape}" class="product-gallery__item" data-value="{$i}" data-thumb="{$image->filename|resize:100:100}" data-fancybox="product-gallery">
 								<span class="product-gallery__item-inner">
-									<img src="{$image->filename|resize:480:340}" alt="">
+									<img src="{$image->filename|resize:480:340}" alt="{$product->name|escape}">
 								</span>
 							</a>
 						{/foreach}
@@ -71,9 +71,9 @@
 						{if $product->variants|count > 0}
 							{foreach $product->variants as $v}
 								{if $v->attachment}
-									<a href="{$v->attachment|resize:800:600:w}" class="product-gallery__item" data-value="{$v->id}" data-thumb="{$v->attachment|resize:100:100}" data-fancybox="product-gallery">
+									<a href="{$v->attachment|resize:800:600:w}" title="{$v->name}" class="product-gallery__item" data-value="{$v->id}" data-thumb="{$v->attachment|resize:100:100}" data-fancybox="product-gallery">
 										<span class="product-gallery__item-inner">
-											<img src="{$v->attachment|resize:480:340}" alt="{$v->name}">
+											<img src="{$v->attachment|resize:480:340}"  alt="{$v->name}">
 										</span>
 									</a>
 								{/if}
