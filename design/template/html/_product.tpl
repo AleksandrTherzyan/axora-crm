@@ -22,9 +22,9 @@
 
             <a href="products/{$product->url}" class="item__image-field">
                 {if $product->image}
-                    <img src="{$product->image->filename|resize:242:230}" class="item__image" alt="{$product->name|escape}">
+                    <img src="{$product->image->filename|resize:242:230}" class="item__image" title="{$product->name|escape}" alt="{$product->name|escape}">
                 {else}
-                    <img src="/files/uploads/no-image.png" class="item__image" alt="{$product->name|escape}">
+                    <img src="/files/uploads/no-image.png" class="item__image" title="{$product->name|escape}" alt="{$product->name|escape}">
                 {/if}
             </a>
 
