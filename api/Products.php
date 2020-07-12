@@ -456,9 +456,11 @@ class Products extends Simpla
         // Если есть товар с таким URL, добавляем к нему число
         while ($this->get_product((string)$product['url'])) {
             if (preg_match('/(.+)_([0-9]+)$/', $product['url'], $parts)) {
-                $product['url'] = $parts[1].'_'.($parts[2]+1);
+                $product['url'] = $parts[1] . '_' . ($parts[2] + 1);
+                $product['name'] .= '_' . ($parts[2] + 1);
             } else {
-                $product['url'] = $product['url'].'_2';
+                $product['url'] .= '_2';
+                $product['name'] .= '_2';
             }
         }
         
