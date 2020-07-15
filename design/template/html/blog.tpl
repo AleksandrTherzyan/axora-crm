@@ -3,24 +3,26 @@
 {* Канонический адрес страницы *}
 {$canonical="/blog" scope=root}
 
-<ul class="breadcrumbs">
-	<li class="breadcrumbs__item">
-		<a href="/" class="breadcrumbs__link">Главная</a>
-	</li>
-	<li class="breadcrumbs__item">
-		<a href="/blog/" class="breadcrumbs__link">{$page->name}</a>
+<div class="container">
+	<ul class="breadcrumbs">
+		<li class="breadcrumbs__item">
+			<a href="/" class="breadcrumbs__link">Главная</a>
+		</li>
+		<li class="breadcrumbs__item">
+			<a href="/blog/" class="breadcrumbs__link">{$page->name}</a>
 
-	</li>
-</ul>
+		</li>
+	</ul>
 
-<h1>{$page->name}</h1>
+	<h1>{$page->name}</h1>
 
-{if $posts}
-	<div class="row">
-		{include file="_blog_posts.tpl"}
-	</div>
-{else}
-	<p>Новостей нету</p>
-{/if}
+	{if $posts}
+		<div class="row">
+			{include file="_blog_posts.tpl"}
+		</div>
+	{else}
+		<p>Новостей нету</p>
+	{/if}
 
-{include file='pagination.tpl'}
+	{include file='pagination.tpl'}
+</div>

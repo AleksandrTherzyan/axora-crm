@@ -154,7 +154,17 @@
             <div class="container">
                 <div class="header__menu-line-inner">
                     {* Рекурсивная функция вывода дерева категорий *}
-                    {include file="_nav.tpl"}
+                    <div class="header__menu">
+                        <div class="menu-popup">
+                            <div class="menu-popup__bg"></div>
+                            <div class="menu-popup__inner">
+                                <button type="button" class="menu-popup__close close-btn"><i class="fal fa-times"></i></button>
+                                <div class="menu-popup__content">
+                                    {include file="_nav.tpl"}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="header__control">
                         <div class="control">

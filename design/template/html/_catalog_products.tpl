@@ -2,7 +2,9 @@
     <div class="catalog" data-ajax-products>
         {if $products && $products|count > 0}
             {foreach $products as $product}
-                {include file="_product.tpl" is_catalog=true}
+                <div class="catalog__item">
+                    {include file="_product.tpl" is_catalog=true}
+                </div>
             {/foreach}
         {else}
             {if !$is_favorites}
