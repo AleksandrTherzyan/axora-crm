@@ -607,7 +607,7 @@ class Products extends Simpla
 
         // Дублируем связанные товары
         $related2 = $this->get_related_products2($id);
-        foreach ($related as $r) {
+        foreach ($related2 as $r) {
             $this->add_related_product2($new_id, $r->related_id);
         }
 
