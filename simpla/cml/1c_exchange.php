@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../../vendor/autoload.php';
+
 // Папка для хранения временных файлов синхронизации
 $dir = 'simpla/cml/temp/';
 
