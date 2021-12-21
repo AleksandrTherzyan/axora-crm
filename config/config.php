@@ -14,7 +14,7 @@ db_user = "lrogiixt";
 db_password = "9WhcrGT])72Sd9";
 
 ;Имя базы
-db_name = "lrogiixt_simpla";
+db_name = "lrogiixt_simpla-old";
 
 ;Префикс для таблиц
 db_prefix = s_;
